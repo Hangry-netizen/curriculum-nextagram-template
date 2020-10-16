@@ -11,6 +11,6 @@ class User(BaseModel):
     def validate(self):
         duplicate_emails = User.get_or_none(User.email == self.email)
         if duplicate_emails:
-            self.error.append('There is an existing account with this email address')
+            self.errors.append('There is an existing account with this email address')
         else:
             self.password = hashed_password = generate_password_hash(self.password)

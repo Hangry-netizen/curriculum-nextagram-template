@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template
+import peeweedbevolve
+
+from flask import Blueprint, render_template, url_for, flash, redirect, request
+from models.user import User
 
 
 users_blueprint = Blueprint('users',
@@ -13,8 +16,15 @@ def new():
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
-    pass
-
+    new_user = User(
+        username=request.form.get('username'),
+        email=request.form.get('email'),
+        password=request.form.get('password'))
+    if new_user.save():
+        flash("Suc")
+        return redirect(url_for('users.index'))
+    else:
+        return render_template('users/new.html')
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
