@@ -16,7 +16,17 @@ def new():
 
 @sessions_blueprint.route('/', methods=['POST'])
 def create():
-    return redirect(url_for("sessions.new"))
+    current_user = User.get_or_none(User.username == request.form.get('username'))
+    if current_user:
+        password_to_check = request.form.get('password')
+        hashed_password = current_user.password_hash
+        result = check_password_hash(hashed_password, password_to_check)
+        if result:
+            flash('Signed in!')
+            return redirect(url_for("sessions.show", username = current_user.username))
+    if current_user == None or result == None:
+        flash('Incorrect username or password')
+        return redirect(url_for("sessions.new"))
 
 @sessions_blueprint.route('/<username>', methods=["GET"])
 def show(username):
