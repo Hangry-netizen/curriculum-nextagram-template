@@ -31,6 +31,6 @@ class User(BaseModel):
                 self.errors.append("Password must contain at least one special character")
             if len(self.errors) == 0:
                 print("No erros detected")
-                self.password_hash = generate_password_hash(self.password)
+                self.password_hash= generate_password_hash(self.password)
         elif not self.password_hash:
             self.errors.append('Password is required')
