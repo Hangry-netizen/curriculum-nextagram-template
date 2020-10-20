@@ -26,8 +26,10 @@ def create():
             login_user(user)
             return redirect("/")
         else:
-            return "Incorrect password"
+            flash("Incorrect password")
+            return redirect(url_for("sessions.new"))
     else:
+        flash("Username not found")
         return redirect(url_for("sessions.new"))
 
 @sessions_blueprint.route('/delete', methods=['POST'])
@@ -40,18 +42,9 @@ def destroy():
 def show(username):
     return "User's Profile Page"
 
-
 @sessions_blueprint.route('/', methods=["GET"])
 def index():
     return "USERS"
-
-
-@sessions_blueprint.route('/<id>/edit', methods=['GET'])
-@login_required
-def edit(id):
-
-    pass
-
 
 @sessions_blueprint.route('/<id>', methods=['POST'])
 def update(id):

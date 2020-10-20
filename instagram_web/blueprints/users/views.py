@@ -3,6 +3,8 @@ import peeweedbevolve
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from models.user import *
 
+from flask_login import login_required, current_user
+
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -39,10 +41,35 @@ def index():
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
-    pass
+    user = User.get_by_id(id)
+    # the user we are modifying, based on id from form action
+    
+    if current_user == user:
+        # Update
+        # Do whatever else
+        return render_template('users/edit.html')
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    update_user = User.get_by_id(id)
+    name = request.form.get('update_username')
+    email = request.form.get('update_email')
+    password = request.form.get('update_password')
+    
+    if name != "" or email != "" or password != "":
+        update_user.username = name
+        update_user.email = email
+        update_user.password = password
+        if update_user.save():
+            flash("Successfully updated your info!")
+            return redirect("/")
+        else:
+            flash("Update was unsuccessful")
+            print(update_user.errors)
+            return redirect(url_for('users.edit', id=current_user.id))
+    else:
+        flash("At least one of the fields must be filled")
+        return redirect(url_for ('users.edit', id=current-user.id))
