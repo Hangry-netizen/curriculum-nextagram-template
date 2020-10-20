@@ -9,4 +9,18 @@
 
 {% block content %}
   <h1>Homepage</h1>
+  {% if current_user.is_authenticated %}
+    <h3>Welcome back, {{current_user.username}} </h3>
+    <form action={{ url_for('sessions.destroy') }} method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <button type="submit" class="btn btn-info" value="Signout">Log out</button>
+    </form>
+  {% else %}
+    <form action={{ url_for('sessions.new') }} method="GET">
+      <button type="submit" class="btn btn-info">Sign in</button>
+    </form>
+    <form action={{ url_for('users.new') }} method="GET">
+      <button type="submit" class="btn btn-info">Sign up</button>
+    </form>
+  {% endif %}
 {% endblock %}
