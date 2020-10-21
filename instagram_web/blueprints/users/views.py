@@ -1,9 +1,8 @@
 import peeweedbevolve
-
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from models.user import *
-
 from flask_login import login_required, current_user
+from helpers import upload_file_to_s3
 
 
 users_blueprint = Blueprint('users',
@@ -49,10 +48,11 @@ def edit(id):
     # the user we are modifying, based on id from form action
     
     if current_user == user:
-        return render_template('users/edit.html')
+        return render_template('users/edit.html', user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
+@login_required
 def update(id):
     update_user = User.get_by_id(id)
     name = request.form.get('update_username')
@@ -73,3 +73,29 @@ def update(id):
     else:
         flash("At least one of the fields must be filled")
         return redirect(url_for ('users.edit', id=current-user.id))
+
+@users_blueprint.route('/<id>/upload_profile_image', methods=['POST'])
+@login_required
+def upload_profile_image(id):
+    user = User.get_or_none(User.id == id)
+
+    if "profile_image" not in request.files:
+        return flash("No user_file key in request.files")
+
+    file = request.files["profile_image"]
+
+    if file.filename == "":
+        return flash("Please select a file")
+    
+    if file:
+        file_path = upload_file_to_s3(file)
+        user.image_path = file_path
+        if user.save():
+            return redirect(url_for('users.show', username=user.username))
+        else:
+            print(user.errors)
+            flash("Image upload failed. Please try again")
+            return redirect(url_for('users.edit', id=user.id))
+
+    else:
+        return redirect(url_for("users.edit", id=id))

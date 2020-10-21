@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>Edit My Details</h1>
+<h2>Edit My Details</h2>
 <form action={{url_for('users.update', id = current_user.id)}} method="POST">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <div class="form-group">
@@ -21,5 +21,19 @@
     <input type="password" class="form-control" name='update_password'/ >
   </div>
   <button type="submit" class="btn btn-success">Submit</button>
+</form>
+
+<h2>Upload My Profile Image</h2>
+<form action="{{url_for('users.upload_profile_image', id=user.id)}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <div class="input-group">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" name="profile_image">
+      <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+    </div>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Upload</button>
+    </div>
+  </div>
 </form>
 {% endblock %}
