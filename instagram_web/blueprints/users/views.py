@@ -32,7 +32,9 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    pass
+    user = User.get_or_none(User.username == username)
+    print(user.username)
+    return render_template('users/show.html', user=user)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -47,8 +49,6 @@ def edit(id):
     # the user we are modifying, based on id from form action
     
     if current_user == user:
-        # Update
-        # Do whatever else
         return render_template('users/edit.html')
 
 
@@ -65,7 +65,7 @@ def update(id):
         update_user.password = password
         if update_user.save():
             flash("Successfully updated your info!")
-            return redirect("/")
+            return redirect(url_for('users.show', username=User.username))
         else:
             flash("Update was unsuccessful")
             print(update_user.errors)

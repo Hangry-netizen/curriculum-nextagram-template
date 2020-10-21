@@ -1,0 +1,11 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+    New User
+{% endblock %}
+
+{% block content %}
+<h1>Profile Page</h1>
+<h4>{{ user.username|upper }}</h4>
+<h5>User ID: {{user.id}}</h5>
+{% endblock %}
