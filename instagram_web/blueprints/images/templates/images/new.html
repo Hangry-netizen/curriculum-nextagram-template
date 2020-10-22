@@ -1,0 +1,21 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+    Edit My Details
+{% endblock %}
+
+{% block content %}
+<h2>Upload Image</h2>
+<form action={{url_for('images.create')}} method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <div class="input-group">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" name="user_image">
+      <label class="custom-file-label" for="inputGroupFile04">Select image</label>
+    </div>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Upload</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

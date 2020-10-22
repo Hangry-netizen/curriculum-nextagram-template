@@ -6,8 +6,8 @@ from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, logout_user
 
 sessions_blueprint = Blueprint('sessions',
-                            __name__,
-                            template_folder='templates')
+                                __name__,
+                                template_folder='templates')
 
 
 @sessions_blueprint.route('/new', methods=['GET'])

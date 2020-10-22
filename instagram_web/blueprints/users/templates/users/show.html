@@ -1,12 +1,15 @@
 {% extends "_layout.html" %}
 
 {% block title %}
-    New User
 {% endblock %}
 
 {% block content %}
 <h1>Profile Page</h1>
-<img src="{{user.profile_image_path}}" />
+<img src="{{user.profile_image_path}}" width="200px" />
 <h4>{{ user.username|upper }}</h4>
 <h5>User ID: {{user.id}}</h5>
+
+{% for image in images %}
+    <img src="{{image.user_image_url}}" width="200px"/>
+{% endfor %}
 {% endblock %}

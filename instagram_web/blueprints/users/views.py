@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, url_for, flash, redirect, request
 from models.user import *
 from flask_login import login_required, current_user
 from helpers import upload_file_to_s3
+from models.image import Image
 
 
 users_blueprint = Blueprint('users',
@@ -32,8 +33,8 @@ def create():
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
     user = User.get_or_none(User.username == username)
-    print(user.username)
-    return render_template('users/show.html', user=user)
+    images = Image.select().where(Image.user == user)
+    return render_template('users/show.html', user=user, images=images)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -79,16 +80,13 @@ def update(id):
 def upload_profile_image(id):
     user = User.get_or_none(User.id == id)
 
-    if "profile_image" not in request.files:
-        return flash("No user_file key in request.files")
-
     file = request.files["profile_image"]
 
     if file.filename == "":
         return flash("Please select a file")
     
     if file:
-        file_path = upload_file_to_s3(file)
+        file_path = upload_file_to_s3(file, folder_name="profile-img")
         user.image_path = file_path
         if user.save():
             return redirect(url_for('users.show', username=user.username))
