@@ -15,6 +15,9 @@ class Config(object):
     BT_KEY = os.environ.get('BT_PUBLIC_KEY')
     BT_SECRET = os.environ.get('BT_PRIVATE_KEY')
 
+    G_CLIENT_ID = os.environ.get("G_CLIENT_ID")
+    G_CLIENT_SECRET = os.environ.get("G_CLIENT_SECRET")
+
 
 class ProductionConfig(Config):
     DEBUG = False

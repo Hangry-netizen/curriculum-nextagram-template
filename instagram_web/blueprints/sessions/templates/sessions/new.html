@@ -16,6 +16,11 @@
     <label for="password">Password</label>
     <input type="password" class="form-control" name='password'/ >
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-secondary">Submit</button>
+</form>
+<br>
+<form action={{ url_for('sessions.google_login') }}>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <button type="submit" class="btn btn-primary">Log in with Google</button>
 </form>
 {% endblock %}

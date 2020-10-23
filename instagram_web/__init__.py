@@ -8,6 +8,7 @@ from flask_assets import Environment, Bundle
 from .util.assets import bundles
 from flask_login import login_user, LoginManager
 from models.user import User
+from instagram_web.util.google_oauth import oauth
 
 assets = Environment(app)
 assets.register(bundles)
@@ -19,6 +20,8 @@ app.register_blueprint(transactions_blueprint, url_prefix="/images/<image_id>/tr
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+oauth.init_app(app)
 
 @app.errorhandler(500)
 def internal_server_error(e):

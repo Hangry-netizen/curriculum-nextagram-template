@@ -66,7 +66,7 @@ def update(id):
         update_user.password = password
         if update_user.save():
             flash("Successfully updated your info!")
-            return redirect(url_for('users.show', username=User.username))
+            return redirect(url_for('users.show', username=current_user.username))
         else:
             flash("Update was unsuccessful")
             print(update_user.errors)
