@@ -51,7 +51,7 @@ def authorize():
     user = User.get_or_none(User.email == email)
     if user:
         login_user(user)
-        return redirect(url_for('users.show', username=user.username))
+        return redirect("/")
     else:
         flash("Log in failed. Please try again.")
         return redirect(url_for('sessions.new'))

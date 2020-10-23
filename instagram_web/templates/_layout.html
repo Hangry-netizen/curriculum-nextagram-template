@@ -24,18 +24,50 @@
 
   </head>
   <body>
+  <!-- navbar --->
+    {% block nav %}
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Nextagram</a>
+        {%  if current_user.is_authenticated %}
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="{{url_for("users.show", username=current_user.username)}}">My Profile <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{url_for("images.new")}}">Upload images</a>
+              <a class="nav-link" href="{{url_for("sessions.destroy")}}">Log out</a>
+            </div>
+          </div>
+          {% else %}
+              <div class="sign-in-and-sign-up">
+                <form action={{ url_for('sessions.new') }} method="GET">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-info">Sign in</button>
+                </form>
+                <form action={{ url_for('users.new') }} method="GET">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-info">Sign up</button>
+                </form>
+              </div>
+        {% endif %}
+      </nav>
+    {% endblock %}
+
   <!-- flash message --->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul class=flashes>
+        <ul style="list-style-type: none;" class=flashes>
         {% for message in messages %}
           <li>{{ message }}</li>
         {% endfor %}
         </ul>
       {% endif %}
     {% endwith %}
+
     {% block content %}
     {% endblock %}
+    
     <footer>
       Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
     </footer>

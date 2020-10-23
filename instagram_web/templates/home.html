@@ -8,31 +8,9 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Homepage</h1>
 
   {% if current_user.is_authenticated %}
     <h3>Welcome back, {{current_user.username | upper}} </h3>
-    <div class="flex">
-      <form action={{ url_for('users.show', username=current_user.username) }} method="GET">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-info" value="Signout">My Profile</button>
-      </form>
-      <form action={{ url_for('sessions.destroy') }} method="POST">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-secondary" value="Signout">Log out</button>
-      </form>
-    </div>
-
-  {% else %}
-    <div class="flex">
-      <form action={{ url_for('sessions.new') }} method="GET">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-info">Sign in</button>
-      </form>
-      <form action={{ url_for('users.new') }} method="GET">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-info">Sign up</button>
-      </form>
-    </div>
   {% endif %}
+  
 {% endblock %}
