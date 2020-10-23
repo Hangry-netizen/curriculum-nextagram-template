@@ -35,3 +35,4 @@ def create():
 
     else:
         return redirect(url_for("images.new"))
+        
